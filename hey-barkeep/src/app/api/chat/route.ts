@@ -1,4 +1,4 @@
-import { streamText } from 'ai';
+import { convertToModelMessages, streamText, type UIMessage } from 'ai';
 import { openai } from '@/echo';
 
 // Allow streaming responses up to 30 seconds
@@ -9,6 +9,9 @@ export async function POST(req: Request) {
     const {
       model,
       messages,
+    }: {
+      messages: UIMessage[];
+      model: string;
     } = await req.json();
 
     // Validate required parameters
@@ -41,10 +44,13 @@ export async function POST(req: Request) {
     const result = streamText({
       model: openai(model),
       system: 'You are a helpful barkeep and mixologist. Your job is to suggest drink recipes, cocktail alterations, and give advice to aspiring mixologists. You have extensive knowledge of spirits, liqueurs, bitters, garnishes, and classic cocktail techniques. You can help with everything from basic drink recipes to advanced mixology techniques, ingredient substitutions, and pairing suggestions. Always be friendly, knowledgeable, and encouraging to those learning the craft.',
-      messages,
+      messages: convertToModelMessages(messages),
     });
 
-    return result.toAIStreamResponse();
+    return result.toUIMessageStreamResponse({
+      sendSources: true,
+      sendReasoning: true,
+    });
   } catch (error) {
     console.error('Chat API error:', error);
     return new Response(

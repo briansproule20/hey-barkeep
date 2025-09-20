@@ -60,13 +60,13 @@ const suggestions = [
 const ChatBotDemo = () => {
   const [input, setInput] = useState('');
   const [model, setModel] = useState<string>(models[0].value);
-  const { messages, append, isLoading } = useChat();
+  const { messages, sendMessage, status } = useChat();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim()) {
-      append(
-        { role: 'user', content: input },
+      sendMessage(
+        { text: input },
         {
           body: {
             model: model,
@@ -78,8 +78,8 @@ const ChatBotDemo = () => {
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    append(
-      { role: 'user', content: suggestion },
+    sendMessage(
+      { text: suggestion },
       {
         body: {
           model: model,
@@ -100,32 +100,82 @@ const ChatBotDemo = () => {
                 description="Start a conversation to see messages here"
               />
             ) : (
-              messages.map((message, messageIndex) => (
+              messages.map(message => (
                 <div key={message.id}>
-                  <Message from={message.role}>
-                    <MessageContent>
-                      <Response key={`${message.id}`}>
-                        {message.content}
-                      </Response>
-                    </MessageContent>
-                  </Message>
                   {message.role === 'assistant' &&
-                    messageIndex === messages.length - 1 && (
-                      <Actions className="mt-2">
-                        <Action
-                          onClick={() =>
-                            navigator.clipboard.writeText(message.content)
+                    message.parts.filter(part => part.type === 'source-url')
+                      .length > 0 && (
+                      <Sources>
+                        <SourcesTrigger
+                          count={
+                            message.parts.filter(
+                              part => part.type === 'source-url'
+                            ).length
                           }
-                          label="Copy"
-                        >
-                          <CopyIcon className="size-3" />
-                        </Action>
-                      </Actions>
+                        />
+                        {message.parts
+                          .filter(part => part.type === 'source-url')
+                          .map((part, i) => (
+                            <SourcesContent key={`${message.id}-${i}`}>
+                              <Source
+                                key={`${message.id}-${i}`}
+                                href={part.url}
+                                title={part.url}
+                              />
+                            </SourcesContent>
+                          ))}
+                      </Sources>
                     )}
+                  {message.parts.map((part, i) => {
+                    switch (part.type) {
+                      case 'text':
+                        return (
+                          <Fragment key={`${message.id}-${i}`}>
+                            <Message from={message.role}>
+                              <MessageContent>
+                                <Response key={`${message.id}-${i}`}>
+                                  {part.text}
+                                </Response>
+                              </MessageContent>
+                            </Message>
+                            {message.role === 'assistant' &&
+                              i === messages.length - 1 && (
+                                <Actions className="mt-2">
+                                  <Action
+                                    onClick={() =>
+                                      navigator.clipboard.writeText(part.text)
+                                    }
+                                    label="Copy"
+                                  >
+                                    <CopyIcon className="size-3" />
+                                  </Action>
+                                </Actions>
+                              )}
+                          </Fragment>
+                        );
+                      case 'reasoning':
+                        return (
+                          <Reasoning
+                            key={`${message.id}-${i}`}
+                            className="w-full"
+                            isStreaming={
+                              status === 'streaming' &&
+                              i === message.parts.length - 1 &&
+                              message.id === messages.at(-1)?.id
+                            }
+                          >
+                            <ReasoningTrigger />
+                            <ReasoningContent>{part.text}</ReasoningContent>
+                          </Reasoning>
+                        );
+                      default:
+                        return null;
+                    }
+                  })}
                 </div>
               ))
             )}
-            {isLoading && <Loader />}
+            {status === 'submitted' && <Loader />}
           </ConversationContent>
           <ConversationScrollButton />
         </Conversation>
@@ -167,7 +217,7 @@ const ChatBotDemo = () => {
                 </PromptInputModelSelectContent>
               </PromptInputModelSelect>
             </PromptInputTools>
-            <PromptInputSubmit disabled={!input || isLoading} />
+            <PromptInputSubmit disabled={!input} status={status} />
           </PromptInputToolbar>
         </PromptInput>
       </div>
