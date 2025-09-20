@@ -2,6 +2,8 @@ import Chat from '@/app/_components/chat';
 import SignInButton from '@/app/_components/echo/sign-in-button';
 import { isSignedIn } from '@/echo';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   let signedIn = false;
   

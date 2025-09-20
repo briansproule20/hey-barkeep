@@ -17,6 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'hey barkeep',
   description: 'AI-powered chat application with Echo billing integration',
+  metadataBase: new URL(process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'),
   icons: {
     icon: '/favicon.png',
   },

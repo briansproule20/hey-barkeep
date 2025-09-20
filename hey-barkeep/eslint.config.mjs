@@ -8,11 +8,6 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.config({
     extends: ['next'],
-    settings: {
-      next: {
-        rootDir: 'examples/nextjs-chatbot/',
-      },
-    },
   }),
 ]
 
