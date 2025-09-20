@@ -61,7 +61,6 @@ const ChatBotDemo = () => {
   const [input, setInput] = useState('');
   const [model, setModel] = useState<string>(models[0].value);
   const { messages, sendMessage, status } = useChat({
-    api: '/api/chat',
     onResponse: (response) => {
       console.log('📡 Response received:', response.status, response.statusText);
     },
