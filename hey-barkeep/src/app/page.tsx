@@ -3,7 +3,15 @@ import SignInButton from '@/app/_components/echo/sign-in-button';
 import { isSignedIn } from '@/echo';
 
 export default async function Home() {
-  const signedIn = await isSignedIn();
+  let signedIn = false;
+  
+  try {
+    signedIn = await isSignedIn();
+  } catch (error) {
+    console.error('Error checking sign-in status:', error);
+    // Default to showing sign-in page if Echo is not configured
+    signedIn = false;
+  }
 
   if (!signedIn) {
     return (
