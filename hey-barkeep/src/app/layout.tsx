@@ -15,8 +15,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Echo Chat',
+  title: 'hey barkeep',
   description: 'AI-powered chat application with Echo billing integration',
+  icons: {
+    icon: '/favicon.png',
+  },
+  openGraph: {
+    title: 'hey barkeep',
+    description: 'AI-powered chat application with Echo billing integration',
+    images: ['/favicon.png'],
+  },
 };
 
 export default function RootLayout({
@@ -30,7 +38,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} flex h-screen flex-col antialiased`}
       >
         <Providers>
-          <Header title="Echo Chat" />
+          <Header title="hey barkeep" />
           <div className="min-h-0 flex-1">{children}</div>
         </Providers>
       </body>

@@ -50,9 +50,11 @@ const models = [
 ];
 
 const suggestions = [
-  'Can you explain how to play tennis?',
-  'Write me a code snippet of how to use the vercel ai sdk to create a chatbot',
-  'How do I make a really good fish taco?',
+  'What are the ingredients for a classic Old Fashioned?',
+  'How do I make a perfect Manhattan cocktail?',
+  'What\'s the difference between bourbon and whiskey?',
+  'Can you suggest a good cocktail for someone who likes fruity drinks?',
+  'What are some essential tools every home bartender should have?',
 ];
 
 const ChatBotDemo = () => {

@@ -1,5 +1,6 @@
 import { EchoAccount } from '@/components/echo-account-next';
 import { isSignedIn } from '@/echo';
+import Image from 'next/image';
 import type { FC } from 'react';
 
 interface HeaderProps {
@@ -20,6 +21,13 @@ const Header: FC<HeaderProps> = async ({
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
+            <Image
+              src="/favicon.png"
+              alt="hey barkeep favicon"
+              width={32}
+              height={32}
+              className="mr-3"
+            />
             <h1 className="font-semibold text-gray-900 text-xl">{title}</h1>
           </div>
 
