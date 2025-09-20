@@ -21,10 +21,10 @@ export default async function Home() {
         <div className="w-full max-w-md space-y-8 text-center">
           <div>
             <h2 className="mt-6 font-bold text-3xl text-gray-900 tracking-tight dark:text-white">
-              Echo Demo App
+              hey barkeep
             </h2>
             <p className="mt-2 text-gray-600 text-sm dark:text-gray-400">
-              AI-powered chat with built-in billing and user management
+              Your AI bartender for cocktail recipes and mixology advice
             </p>
           </div>
 
@@ -32,7 +32,7 @@ export default async function Home() {
             <SignInButton />
 
             <div className="text-gray-500 text-xs dark:text-gray-400">
-              Secure authentication with built-in AI billing
+              Secure authentication for your personal bartender
             </div>
           </div>
         </div>
