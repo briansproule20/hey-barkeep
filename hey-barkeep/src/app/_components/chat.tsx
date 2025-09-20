@@ -60,11 +60,23 @@ const suggestions = [
 const ChatBotDemo = () => {
   const [input, setInput] = useState('');
   const [model, setModel] = useState<string>(models[0].value);
-  const { messages, sendMessage, status } = useChat();
+  const { messages, sendMessage, status } = useChat({
+    api: '/api/chat',
+    onResponse: (response) => {
+      console.log('📡 Response received:', response.status, response.statusText);
+    },
+    onError: (error) => {
+      console.error('❌ Chat error:', error);
+    },
+    onFinish: (message) => {
+      console.log('✅ Message finished:', message);
+    }
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim()) {
+      console.log('🚀 Sending message:', input);
       sendMessage(
         { text: input },
         {
@@ -78,6 +90,7 @@ const ChatBotDemo = () => {
   };
 
   const handleSuggestionClick = (suggestion: string) => {
+    console.log('🔥 Suggestion clicked:', suggestion);
     sendMessage(
       { text: suggestion },
       {
